@@ -1,0 +1,48 @@
+
+	#include <bits/stdc++.h>
+
+using namespace std; 
+
+typedef pair<int ,int> PII;
+bool marked[3001];
+vector<PII> adj[3001];
+
+
+int prim(int s)
+{
+    priority_queue<PII,vector<PII>,greater<PII>> Q;
+    int minimumCost=0;
+    Q.push(make_pair(0,s));
+    while(!Q.empty())
+    {
+        PII p = Q.top();
+        Q.pop();
+        s  = p.second;
+        if(marked[s] == true)
+            continue;
+        minimumCost += p.first;
+        marked[s] = true;
+        for(int i=0;i<adj[s].size();i++)
+        {
+            int y = adj[s][i].second;
+            if(marked[y]==false)
+                Q.push(adj[s][i]);
+        }
+    }
+    return minimumCost;
+}
+int main()
+{
+    int n,e;
+    cin>>n>>e;
+    for(int i=0;i<e;i++)
+    {
+        int x,y,weight;
+        cin>>x>>y>>weight;
+        adj[x].push_back(make_pair(weight,y));
+        adj[y].push_back(make_pair(weight,x));
+    }
+    int s;
+    cin>>s;
+    cout<<prim(s);
+}
